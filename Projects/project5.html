@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Double Slope Solar Still — CFD Simulation — Aniket Chorghe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0c0e0d;
+      --bg2:     #141715;
+      --bg3:     #1b1f1d;
+      --accent:  #1fbe88;
+      --accent2: #0d8a5e;
+      --text:    #e6ede8;
+      --muted:   #7a9484;
+      --border:  rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.11);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; line-height: 1.6; font-weight: 300; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 4rem; height: 64px;
+      background: rgba(245,246,243,0.97); backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+    }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 16px; color: var(--accent2); letter-spacing: 0.05em; text-decoration: none; font-style: italic; }
+    .nav-back { display: flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 12px; color: #5a6e62; text-decoration: none; letter-spacing: 0.07em; transition: color 0.2s; }
+    .nav-back:hover { color: var(--accent2); }
+
+    .project-hero { padding: 8rem 4rem 4rem; background: var(--bg2); border-bottom: 0.5px solid var(--border); }
+    .project-hero .inner { max-width: 960px; margin: 0 auto; }
+    .project-num { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 1rem; }
+    .project-hero h1 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3rem); color: var(--text); line-height: 1.15; margin-bottom: 1.5rem; }
+    .project-hero h1 em { color: var(--accent); font-style: italic; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+    .ptag { font-size: 12px; padding: 5px 14px; border-radius: 4px; font-family: 'DM Mono', monospace; background: rgba(31,190,136,0.08); color: var(--accent2); border: 0.5px solid rgba(31,190,136,0.18); }
+
+    .project-content { padding: 4rem; }
+    .project-content .inner { max-width: 960px; margin: 0 auto; }
+    
+    .section { margin-bottom: 3.5rem; }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+    .section p { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
+    .section ul { margin-left: 1.5rem; margin-bottom: 1rem; }
+    .section li { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 0.5rem; }
+    .section li strong { color: var(--text); font-weight: 500; }
+    
+    .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 1.5rem; }
+    .result-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 8px; padding: 1.5rem; }
+    .result-value { font-family: 'Fraunces', serif; font-size: 1.8rem; color: var(--accent); margin-bottom: 0.3rem; }
+    .result-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
+
+    .tools-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1rem; }
+    .tool-item { background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 6px; padding: 10px 18px; font-size: 13px; color: var(--text); font-family: 'DM Mono', monospace; }
+
+    .download-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-decoration: none; border-radius: 4px; background: var(--accent); color: #0c0e0d; font-weight: 500; transition: all 0.2s; margin-top: 1rem; }
+    .download-btn:hover { background: #15d695; transform: translateY(-2px); }
+
+    footer { background: var(--bg); border-top: 0.5px solid var(--border); padding: 2rem 4rem; text-align: center; }
+    footer p { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .project-hero { padding: 7rem 1.5rem 3rem; }
+      .project-content { padding: 2rem 1.5rem; }
+      footer { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">AC</a>
+  <a href="../index.html#projects" class="nav-back">← Back to Projects</a>
+</nav>
+
+<section class="project-hero">
+  <div class="inner">
+    <div class="project-num">PROJECT 05</div>
+    <h1>Double Slope Solar Still — <em>CFD Simulation</em></h1>
+    <div class="project-tags">
+      <span class="ptag">ANSYS Fluent</span>
+      <span class="ptag">VOF</span>
+      <span class="ptag">Multiphase</span>
+      <span class="ptag">CFD</span>
+      <span class="ptag">Heat Transfer</span>
+    </div>
+  </div>
+</section>
+
+<section class="project-content">
+  <div class="inner">
+
+    <!-- Why the Project? -->
+    <div class="section">
+      <div class="section-label">Why This Project?</div>
+      <p>Access to clean drinking water remains a critical challenge in many regions worldwide. Solar distillation offers a sustainable, low-cost solution for producing freshwater from saline or contaminated sources using only solar energy.</p>
+      <p>This project aimed to develop a comprehensive CFD model of a double slope solar still to understand the complex multiphase heat and mass transfer phenomena, predict freshwater yield, and optimize design parameters for improved efficiency.</p>
+    </div>
+
+    <!-- How Was It Done? -->
+    <div class="section">
+      <div class="section-label">How Was It Done?</div>
+      <p>The simulation was developed using ANSYS Fluent with the following approach:</p>
+      <ul>
+        <li><strong>Geometry & Meshing:</strong> Created a 3D model of the double slope solar still with appropriate boundary conditions for basin, glass cover, and insulated walls.</li>
+        <li><strong>Multiphase Modeling:</strong> Implemented VOF (Volume of Fluid) method to track the water-air interface and capture evaporation/condensation phenomena.</li>
+        <li><strong>Turbulence Model:</strong> Applied RNG k-ε turbulence model to accurately predict natural convection inside the still enclosure.</li>
+        <li><strong>Solar Loading:</strong> Used solar ray tracing to simulate realistic solar irradiation from 9 AM to 4 PM with transient boundary conditions.</li>
+        <li><strong>Heat Transfer:</strong> Coupled conduction, convection, and radiation heat transfer mechanisms for comprehensive thermal analysis.</li>
+      </ul>
+    </div>
+
+    <!-- What Was Achieved? -->
+    <div class="section">
+      <div class="section-label">What Was Achieved?</div>
+      <div class="results-grid">
+        <div class="result-card">
+          <div class="result-value">0.54</div>
+          <div class="result-label">Freshwater Yield (kg/m²·hr)</div>
+        </div>
+        <div class="result-card">
+          <div class="result-value">VOF</div>
+          <div class="result-label">Multiphase Model</div>
+        </div>
+        <div class="result-card">
+          <div class="result-value">7 hrs</div>
+          <div class="result-label">Simulation Duration</div>
+        </div>
+        <div class="result-card">
+          <div class="result-value">RNG k-ε</div>
+          <div class="result-label">Turbulence Model</div>
+        </div>
+      </div>
+      <p style="margin-top: 1.5rem;">Successfully developed a validated CFD model predicting freshwater yield of 0.54 kg/m²·hr. The simulation captured temperature distributions, velocity fields, and phase change dynamics throughout the solar day, providing insights for design optimization of solar desalination systems.</p>
+    </div>
+
+    <!-- Tools & Technologies -->
+    <div class="section">
+      <div class="section-label">Tools & Technologies</div>
+      <div class="tools-list">
+        <span class="tool-item">ANSYS Fluent</span>
+        <span class="tool-item">VOF Multiphase</span>
+        <span class="tool-item">RNG k-ε Turbulence</span>
+        <span class="tool-item">Solar Ray Tracing</span>
+        <span class="tool-item">Transient Analysis</span>
+        <span class="tool-item">Heat Transfer</span>
+      </div>
+    </div>
+
+    <!-- Project Report -->
+    <div class="section">
+      <div class="section-label">Project Report</div>
+      <a href="../Documents/Reports/project5_report.pdf" download class="download-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Report (PDF)
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>Aniket Chorghe · <a href="../index.html">Back to Portfolio</a></p>
+</footer>
+
+</body>
+</html>
