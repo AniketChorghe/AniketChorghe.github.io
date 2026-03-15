@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aniket Chorghe — Mechanical Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,500&family=Outfit:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0c0e0d;
+      --bg2:     #141715;
+      --bg3:     #1b1f1d;
+      --bg4:     #222622;
+      --accent:  #1fbe88;
+      --accent2: #0d8a5e;
+      --accent3: rgba(31,190,136,0.12);
+      --text:    #e6ede8;
+      --muted:   #7a9484;
+      --border:  rgba(255,255,255,0.06);
+      --border2: rgba(255,255,255,0.11);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Outfit', sans-serif; line-height: 1.6; overflow-x: hidden; font-weight: 300; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 4rem; height: 64px;
+      background: rgba(245,246,243,0.97); backdrop-filter: blur(16px);
+      border-bottom: 0.5px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 12px rgba(0,0,0,0.08);
+    }
+    .nav-logo { font-family: 'Fraunces', serif; font-size: 16px; color: var(--accent2); letter-spacing: 0.05em; text-decoration: none; font-style: italic; }
+    .nav-links { display: flex; gap: 0; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace; font-size: 12px; color: #5a6e62;
+      text-decoration: none; letter-spacing: 0.07em;
+      padding: 0 1.2rem; height: 64px; display: flex; align-items: center;
+      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--muted); transition: 0.3s; }
+
+    /* SECTIONS */
+    section { padding: 7rem 4rem 5rem; }
+    .inner { max-width: 960px; margin: 0 auto; width: 100%; }
+    .slabel { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1rem; }
+    .slabel::before { content: ''; }
+    h2 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 4vw, 3rem); color: var(--text); line-height: 1.1; margin-bottom: 3rem; }
+    h2 em { color: var(--accent); font-style: italic; }
+
+    /* HOME */
+    #home { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; background: var(--bg); }
+    .grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, black 0%, transparent 80%);
+    }
+    .glow { position: absolute; z-index: 0; width: 700px; height: 700px; background: radial-gradient(circle, rgba(31,190,136,0.07) 0%, transparent 70%); top: 50%; right: -150px; transform: translateY(-50%); pointer-events: none; }
+    .home-inner { position: relative; z-index: 1; }
+    .home-tag { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.6s ease 0.2s forwards; }
+    .home-tag::before { content: '> '; opacity: 0.4; }
+    h1 { font-family: 'Fraunces', serif; font-size: clamp(3.5rem, 8vw, 7rem); line-height: 1.0; color: var(--text); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.7s ease 0.35s forwards; }
+    h1 em { color: var(--accent); font-style: italic; }
+    .home-desc { font-size: 1.05rem; color: var(--muted); max-width: 520px; line-height: 1.8; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s ease 0.5s forwards; }
+    .home-btns { display: flex; gap: 14px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.7s ease 0.65s forwards; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-decoration: none; border-radius: 4px; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: var(--accent); color: #0c0e0d; font-weight: 500; }
+    .btn-primary:hover { background: #15d695; transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 0.5px solid var(--border2); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .home-stats { display: flex; gap: 3.5rem; flex-wrap: wrap; margin-top: 5rem; padding-top: 2.5rem; border-top: 0.5px solid var(--border); opacity: 0; animation: fadeUp 0.7s ease 0.8s forwards; }
+    .stat-num { font-family: 'Fraunces', serif; font-size: 2.4rem; color: var(--accent); line-height: 1; }
+    .stat-lbl { font-size: 12px; color: var(--muted); margin-top: 4px; font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+
+    /* ABOUT */
+    #about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 260px 1fr; gap: 4rem; align-items: start; }
+    .photo-box { width: 260px; height: 300px; background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+    .initials { width: 88px; height: 88px; border-radius: 50%; background: var(--accent3); border: 1px solid rgba(31,190,136,0.3); display: flex; align-items: center; justify-content: center; font-family: 'Fraunces', serif; font-size: 2rem; color: var(--accent); }
+    .photo-hint { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.8; padding: 0 1rem; }
+    .bio { font-size: 14.5px; color: var(--muted); line-height: 1.85; margin-bottom: 1rem; }
+    .bio strong { color: var(--text); font-weight: 500; }
+    .edu-list { margin-top: 2rem; display: flex; flex-direction: column; }
+    .edu-row { display: flex; gap: 1.2rem; padding: 1.25rem 0; border-bottom: 0.5px solid var(--border); }
+    .edu-row:last-child { border-bottom: none; }
+    .dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 5px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+    .dot-line { width: 1px; flex: 1; background: var(--border2); margin-top: 6px; }
+    .edu-school { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+    .edu-deg { font-size: 13px; color: var(--muted); margin-bottom: 3px; }
+    .edu-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); }
+
+    /* PROJECTS */
+    #projects { background: var(--bg); }
+    .proj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
+    .proj-card { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.25s, transform 0.25s; cursor: default; }
+    .proj-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .proj-top { height: 170px; background: var(--bg3); display: flex; align-items: center; justify-content: center; border-bottom: 0.5px solid var(--border); position: relative; overflow: hidden; padding: 12px; }
+    .proj-top .pnum { position: absolute; top: 10px; left: 12px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); opacity: 0.9; z-index: 3; background: rgba(12,14,13,0.85); padding: 3px 10px; border-radius: 4px; }
+    .proj-top .pico { font-size: 2.8rem; opacity: 0.18; }
+    .proj-top .proj-img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px; transition: transform 0.3s ease; }
+    .proj-card:hover .proj-img { transform: scale(1.03); }
+    .proj-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(12,14,13,0.85); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; z-index: 2; text-decoration: none; }
+    .proj-overlay span { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--accent); letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px; }
+    .proj-card:hover .proj-overlay { opacity: 1; }
+    .proj-body { padding: 1.3rem 1.4rem; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .proj-title { font-size: 15px; font-weight: 500; line-height: 1.35; color: var(--text); text-decoration: none; transition: color 0.2s; }
+    a.proj-title:hover { color: var(--accent); }
+    .proj-desc { font-size: 13px; color: var(--muted); line-height: 1.7; flex: 1; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+    .ptag { font-size: 11px; padding: 2px 9px; border-radius: 3px; font-family: 'DM Mono', monospace; background: rgba(31,190,136,0.08); color: var(--accent2); border: 0.5px solid rgba(31,190,136,0.18); }
+
+    /* EXPERIENCE */
+    #experience { background: var(--bg2); }
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-row { display: grid; grid-template-columns: 180px 1fr; gap: 2.5rem; padding: 2rem 0; border-bottom: 0.5px solid var(--border); }
+    .exp-row:last-child { border-bottom: none; }
+    .exp-date { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); line-height: 1.9; padding-top: 3px; }
+    .exp-loc { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 4px; }
+    .exp-role { font-size: 16px; font-weight: 500; margin-bottom: 3px; }
+    .exp-org { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--accent); margin-bottom: 12px; }
+    .exp-ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .exp-ul li { font-size: 13.5px; color: var(--muted); line-height: 1.65; padding-left: 18px; position: relative; }
+    .exp-ul li::before { content: ''; position: absolute; left: 0; top: 9px; width: 5px; height: 5px; border-radius: 50%; background: var(--accent2); }
+    .exp-ul li strong { color: var(--text); font-weight: 500; }
+
+    /* SKILLS */
+    #skills { background: var(--bg); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .skill-box { background: var(--bg2); border: 0.5px solid var(--border); border-radius: 8px; padding: 1.4rem; transition: border-color 0.2s; }
+    .skill-box:hover { border-color: var(--border2); }
+    .skill-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { font-size: 12px; padding: 4px 11px; border-radius: 4px; background: var(--bg3); color: var(--muted); border: 0.5px solid var(--border2); font-family: 'DM Mono', monospace; transition: color 0.15s, border-color 0.15s; }
+    .tag:hover { color: var(--accent); border-color: rgba(31,190,136,0.3); }
+    .pub-card { background: var(--bg2); border: 0.5px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 7px 7px 0; padding: 1.1rem 1.4rem; }
+    .pub-card p { font-size: 13.5px; color: var(--muted); line-height: 1.7; }
+    .pub-card strong { color: var(--text); font-weight: 500; }
+    .pub-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); margin-top: 4px; }
+
+    /* CONTACT */
+    #contact { background: var(--bg2); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-intro { font-size: 15px; color: var(--muted); line-height: 1.85; margin-bottom: 2rem; }
+    .contact-links { display: flex; flex-direction: column; gap: 12px; }
+    .clink { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: var(--bg3); border: 0.5px solid var(--border); border-radius: 7px; text-decoration: none; color: var(--text); transition: border-color 0.2s, transform 0.2s; }
+    .clink:hover { border-color: var(--accent); transform: translateX(5px); }
+    .clink-icon { width: 36px; height: 36px; border-radius: 6px; background: var(--accent3); border: 0.5px solid rgba(31,190,136,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; font-family: 'DM Mono', monospace; font-weight: 500; color: var(--accent); }
+    .clink-lbl { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .clink-val { font-size: 13.5px; color: var(--accent); margin-top: 2px; }
+    .cform { display: flex; flex-direction: column; gap: 14px; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .fgroup { display: flex; flex-direction: column; gap: 6px; }
+    .fgroup label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; }
+    .fgroup input, .fgroup textarea { background: var(--bg3); border: 0.5px solid var(--border2); border-radius: 5px; padding: 10px 14px; color: var(--text); font-family: 'Syne', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; resize: none; }
+    .fgroup input:focus, .fgroup textarea:focus { border-color: var(--accent); }
+    .fgroup textarea { height: 120px; }
+    .btn-send { background: var(--accent); color: #0c0e0d; padding: 12px 28px; font-size: 13px; font-family: 'DM Mono', monospace; letter-spacing: 0.06em; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; transition: background 0.2s, transform 0.2s; align-self: flex-start; }
+    .btn-send:hover { background: #15d695; transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer { background: var(--bg); border-top: 0.5px solid var(--border); padding: 2rem 4rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .foot-l { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+    .foot-r { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+    .foot-r a { color: var(--accent); text-decoration: none; }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: rgba(245,246,243,0.97); border-bottom: 0.5px solid rgba(0,0,0,0.08); padding: 0.5rem 0; }
+      .nav-links.open { display: flex; }
+      .nav-links a { height: auto; padding: 12px 2rem; border-bottom: none; }
+      .hamburger { display: flex; }
+      section { padding: 5rem 1.5rem 3rem; }
+      #home { padding: 7rem 1.5rem 4rem; }
+      h1 { font-size: clamp(2.8rem, 10vw, 4rem); }
+      .about-grid { grid-template-columns: 1fr; }
+      .photo-box { width: 100%; height: 180px; flex-direction: row; padding: 0 2rem; }
+      .exp-row { grid-template-columns: 1fr; gap: 0.5rem; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .frow { grid-template-columns: 1fr; }
+      .home-stats { gap: 2rem; }
+      footer { padding: 1.5rem; flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#home" class="nav-logo">AC</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="ham" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════ HOME ══════════════ -->
+<section id="home">
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="inner home-inner">
+    <p class="home-tag">Mechanical Engineer</p>
+    <h1>Aniket<br><em>Chorghe</em></h1>
+    <p class="home-desc">I aim to build things that hold together — and prove it with numbers.</p>
+    <div class="home-btns">
+      <a href="#projects" class="btn btn-primary">View Projects →</a>
+      <a href="Documents/Aniket_Chorghe_Resume.pdf" download class="btn btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Resume
+      </a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+    <div class="home-stats">
+      <div><div class="stat-num">3.85</div><div class="stat-lbl">GPA at USC</div></div>
+      <div><div class="stat-num">5</div><div class="stat-lbl">Key Projects</div></div>
+      <div><div class="stat-num">1</div><div class="stat-lbl">Springer Publication</div></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section id="about">
+  <div class="inner">
+    <h2 class="reveal">About <em>Me</em></h2>
+    <div class="about-grid">
+      <div class="reveal">
+        <img src="Images/Aniket.jpg" alt="Aniket Chorghe" style="width:260px;height:300px;object-fit:cover;object-position:top;border-radius:8px;border:0.5px solid var(--border2);display:block;"/>
+      </div>
+      <div class="reveal">
+        <p class="bio">Hi, I'm Aniket — a Mechanical Engineering graduate student originally from Mumbai, India. I moved to Los Angeles to pursue my MS and deepen my technical expertise.</p>
+        <p class="bio" style="margin-top:1rem;">I enjoy working at the intersection of design and analysis — using engineering tools to take ideas from concept to validated structure. Outside the lab, I'm part of USC's Formula SAE racing team.</p>
+        <p class="bio" style="margin-top:1rem;">I'm currently looking for <strong>entry-level opportunities</strong> as a Mechanical Design Engineer or CAE Engineer, where I can contribute to solving real-world structural and design challenges.</p>
+        <div style="margin-top:2.5rem;">
+          <p class="slabel" style="margin-bottom:1.2rem;">Education</p>
+          <div class="edu-list">
+            <div class="edu-row">
+              <div class="dot-col"><div class="dot"></div><div class="dot-line"></div></div>
+              <div>
+                <div class="edu-school">University of Southern California</div>
+                <div class="edu-deg">MS in Mechanical Engineering</div>
+                <div class="edu-meta">Los Angeles, USA · Aug 2024 – May 2026 · GPA 3.85/4.0</div>
+              </div>
+            </div>
+            <div class="edu-row">
+              <div class="dot-col"><div class="dot"></div></div>
+              <div>
+                <div class="edu-school">SVKM's NMIMS — Mukesh Patel School</div>
+                <div class="edu-deg">B.Tech in Mechanical Engineering</div>
+                <div class="edu-meta">Mumbai, India · Jul 2019 – May 2023 · GPA 3.42/4.0</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PROJECTS ══════════════ -->
+<section id="projects">
+  <div class="inner">
+    <h2 class="reveal">Featured <em>Projects</em></h2>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="pnum">01</span>
+          <img src="Images/1.png" alt="MATLAB CFD Solver GUI" class="proj-img"/>
+          <a href="Projects/project1.html" class="proj-overlay"><span>View More →</span></a>
+        </div>
+        <div class="proj-body">
+          <a href="Projects/project1.html" class="proj-title">MATLAB CFD Solver for 2D Airfoils</a>
+          <div class="proj-desc">MATLAB-based CFD tool with GUI for airfoil analysis using URANS-SA turbulence modeling.</div>
+          <div class="proj-tags"><span class="ptag">MATLAB</span><span class="ptag">CFD</span><span class="ptag">URANS-SA</span><span class="ptag">Airfoil Analysis</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="pnum">02</span>
+          <img src="Images/2.png" alt="Fuselage Structural Design" class="proj-img"/>
+          <a href="Projects/project2.html" class="proj-overlay"><span>View More →</span></a>
+        </div>
+        <div class="proj-body">
+          <a href="Projects/project2.html" class="proj-title">Fuselage Structural Design & Compression Test</a>
+          <div class="proj-desc">Semi-monocoque fuselage design with eigenvalue buckling analysis and 3D printed validation.</div>
+          <div class="proj-tags"><span class="ptag">NX Siemens</span><span class="ptag">FEA</span><span class="ptag">3D Print</span><span class="ptag">Buckling Analysis</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="pnum">03</span>
+          <img src="Images/3.png" alt="Hand Grinder DFMA Redesign" class="proj-img"/>
+          <a href="Projects/project3.html" class="proj-overlay"><span>View More →</span></a>
+        </div>
+        <div class="proj-body">
+          <a href="Projects/project3.html" class="proj-title">Hand Grinder DFMA Redesign</a>
+          <div class="proj-desc">DFMA analysis of 49-part hand grinder with cost modeling for 100k units/year production.</div>
+          <div class="proj-tags"><span class="ptag">DFM</span><span class="ptag">DFA</span><span class="ptag">Cost Estimation</span><span class="ptag">Manufacturing Process</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="pnum">04</span>
+          <img src="Images/4.png" alt="Ceiling Fan Material & Process Selection" class="proj-img"/>
+          <a href="Projects/project4.html" class="proj-overlay"><span>View More →</span></a>
+        </div>
+        <div class="proj-body">
+          <a href="Projects/project4.html" class="proj-title">Ceiling Fan Material & Process Selection</a>
+          <div class="proj-desc">Material selection for recalled fan blade using Ashby methodology in ANSYS Granta.</div>
+          <div class="proj-tags"><span class="ptag">ANSYS Granta</span><span class="ptag">Material Selection</span><span class="ptag">Failure Analysis</span></div>
+        </div>
+      </div>
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="pnum">05</span>
+          <img src="Images/5.png" alt="Double Slope Solar Still CFD Simulation" class="proj-img"/>
+          <a href="Projects/project5.html" class="proj-overlay"><span>View More →</span></a>
+        </div>
+        <div class="proj-body">
+          <a href="Projects/project5.html" class="proj-title">Double Slope Solar Still — CFD Simulation</a>
+          <div class="proj-desc">Multiphase CFD simulation of solar desalination system using VOF model in ANSYS Fluent.</div>
+          <div class="proj-tags"><span class="ptag">ANSYS Fluent</span><span class="ptag">VOF</span><span class="ptag">Multiphase</span><span class="ptag">CFD</span><span class="ptag">Heat Transfer</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EXPERIENCE ══════════════ -->
+<section id="experience">
+  <div class="inner">
+    <h2 class="reveal"><em>Experience</em></h2>
+    <div class="exp-list">
+
+      <div class="exp-row reveal">
+        <div>
+          <div class="exp-date">Aug 2024 – Jun 2025</div>
+          <div class="exp-loc">Los Angeles, CA</div>
+        </div>
+        <div>
+          <div class="exp-role">General Member — SC Racing</div>
+          <div class="exp-org">University of Southern California</div>
+          <ul class="exp-ul">
+            <li>Torsional stiffness testing of SCR-25 chassis — measured <strong>2,708 N·m/deg</strong> using load fixtures and dial indicators.</li>
+            <li>FEA methodology in ANSYS Workbench for torsional stiffness &amp; camber compliance — <strong>&lt;7% deviation</strong> from experimental results.</li>
+            <li>Supported SCR-26 chassis redesign with stiffness-to-weight trade-off analysis across design iterations.</li>
+            <li>Created detailed 2D engineering drawings using NX Siemens for design reviews.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-row reveal">
+        <div>
+          <div class="exp-date">Nov 2024 – May 2025</div>
+          <div class="exp-loc">Los Angeles, CA</div>
+        </div>
+        <div>
+          <div class="exp-role">Research Assistant</div>
+          <div class="exp-org">Advance Composite Design Lab — USC</div>
+          <ul class="exp-ul">
+            <li>Fabricated arched &amp; tapered composite beams using glass &amp; carbon fiber with epoxy matrices for SAMPE 2025.</li>
+            <li>Manufactured beams via vacuum infusion &amp; wet lay-up — achieved <strong>~1,400 lbf</strong> in 3-point bending tests.</li>
+            <li>Performed curing and post-processing of composite parts per engineering drawing specs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-row reveal">
+        <div>
+          <div class="exp-date">May 2022 – Jun 2022</div>
+          <div class="exp-loc">Vapi, India</div>
+        </div>
+        <div>
+          <div class="exp-role">Summer Intern</div>
+          <div class="exp-org">Electro Eco Mobility</div>
+          <ul class="exp-ul">
+            <li>Assembled 4 electric mopeds per standardized operating procedures, documenting all parts used.</li>
+            <li>Diagnosed root causes of assembly issues and implemented corrective actions.</li>
+            <li>Documented full EV subsystem architecture: batteries, controllers, hub motors &amp; braking systems.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ SKILLS ══════════════ -->
+<section id="skills">
+  <div class="inner">
+    <h2 class="reveal">Skills &amp; <em>Tools</em></h2>
+    <div class="skills-grid">
+      <div class="skill-box reveal"><div class="skill-title">CAD & Design</div><div class="tags"><span class="tag">SolidWorks</span><span class="tag">NX Siemens</span><span class="tag">AutoCAD 2D</span><span class="tag">Fusion 360</span><span class="tag">Eng. Drawing</span></div></div>
+      <div class="skill-box reveal"><div class="skill-title">Modeling & Simulation</div><div class="tags"><span class="tag">ANSYS Mechanical</span><span class="tag">ANSYS Fluent</span><span class="tag">ANSYS Granta</span><span class="tag">Simulink</span></div></div>
+      <div class="skill-box reveal"><div class="skill-title">Manufacturing</div><div class="tags"><span class="tag">Vacuum Infusion</span><span class="tag">Wet Lay-Up</span><span class="tag">3D Printing</span><span class="tag">DFA</span><span class="tag">DFM</span></div></div>
+      <div class="skill-box reveal"><div class="skill-title">Programming</div><div class="tags"><span class="tag">MATLAB</span><span class="tag">Python</span></div></div>
+      <div class="skill-box reveal"><div class="skill-title">Analysis Methods</div><div class="tags"><span class="tag">Structural Analysis</span><span class="tag">Buckling Analysis</span><span class="tag">Torsional Testing</span><span class="tag">Material Selection</span><span class="tag">CFD</span></div></div>
+      <div class="skill-box reveal"><div class="skill-title">Productivity Tools</div><div class="tags"><span class="tag">MS Office</span><span class="tag">BOM</span><span class="tag">LaTeX</span></div></div>
+    </div>
+
+    <div style="margin-top:3rem; display:flex; flex-direction:column; gap:12px;" class="reveal">
+      <p class="slabel" style="margin-bottom:0.5rem;">Publications &amp; Certifications</p>
+      <div class="pub-card">
+        <p><strong>Co-author</strong> — <a href="https://link.springer.com/article/10.1007/s13762-023-05428-0" target="_blank" style="color:var(--accent);text-decoration:none;">"A Solar Solution for Water Scarcity: A Review of Solar Still Technology" ↗</a></p>
+        <p class="pub-meta">International Journal of Environmental Science and Technology · Springer · January 2024</p>
+      </div>
+      <div class="pub-card">
+        <p><strong>Certification</strong> — <a href="Solidworks_Certificate.pdf" target="_blank" style="color:var(--accent);text-decoration:none;">Essentials in SolidWorks ↗</a></p>
+        <p class="pub-meta">CADD Centre Training Services · March 2024</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CONTACT ══════════════ -->
+<section id="contact">
+  <div class="inner">
+    <h2 class="reveal">Get in <em>Touch</em></h2>
+    <div class="contact-grid">
+      <div class="reveal">
+        <p class="contact-intro">Have a question, a collaboration idea, or just want to connect? Drop a message and I'll get back to you.</p>
+        <div class="contact-links">
+          <a href="/cdn-cgi/l/email-protection#0e6d66617c69666b4e7b7d6d206b6a7b" class="clink">
+            <div class="clink-icon">✉</div>
+            <div><div class="clink-lbl">Email</div><div class="clink-val"><span class="__cf_email__" data-cfemail="89eae1e6fbeee1ecc9fcfaeaa7ecedfc">[email&#160;protected]</span></div></div>
+          </a>
+          <a href="https://linkedin.com/in/aniket-chorghe" target="_blank" class="clink">
+            <div class="clink-icon">in</div>
+            <div><div class="clink-lbl">LinkedIn</div><div class="clink-val">linkedin.com/in/aniket-chorghe</div></div>
+          </a>
+          <a href="https://github.com/aniketchorghe" target="_blank" class="clink">
+            <div class="clink-icon">gh</div>
+            <div><div class="clink-lbl">GitHub</div><div class="clink-val">github.com/aniketchorghe</div></div>
+          </a>
+          <div class="clink" style="cursor:default;">
+            <div class="clink-icon">📍</div>
+            <div><div class="clink-lbl">Location</div><div class="clink-val">Los Angeles, CA</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <form class="cform" action="https://formspree.io/f/xpqyjdpr" method="POST">
+          <div class="frow">
+            <div class="fgroup"><label>First Name</label><input type="text" name="first_name" placeholder="Jane" required/></div>
+            <div class="fgroup"><label>Last Name</label><input type="text" name="last_name" placeholder="Smith"/></div>
+          </div>
+          <div class="fgroup"><label>Email</label><input type="email" name="email" placeholder="jane@example.com" required/></div>
+          <div class="fgroup"><label>Subject</label><input type="text" name="subject" placeholder="Collaboration / Opportunity / Just saying hi"/></div>
+          <div class="fgroup"><label>Message</label><textarea name="message" placeholder="Your message here..."></textarea></div>
+          <button type="submit" class="btn-send">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-l">Aniket Chorghe · MS Mechanical Engineering · USC 2026</div>
+  <div class="foot-r"><a href="/cdn-cgi/l/email-protection#1c7f74736e7b74795c696f7f32797869"><span class="__cf_email__" data-cfemail="ec8f84839e8b8489ac999f8fc2898899">[email&#160;protected]</span></a> · <a href="https://linkedin.com/in/aniket-chorghe" target="_blank">LinkedIn</a></div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Active nav on scroll
+  const secs = document.querySelectorAll('section[id]');
+  const nlinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    secs.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    nlinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + cur));
+  });
+
+  // Hamburger menu
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  nlinks.forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+</script>
+</body>
+</html>=> a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
+</script>
+</body>
+</html>
